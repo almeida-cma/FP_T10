@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python - TEMA 10: Listas, Tuplas e Dicionários</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #eee;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .header p {
+            margin-top: 10px;
+            color: #aaa;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffd700;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95em;
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            color: #ddd;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+        }
+
+        .tab-btn.active {
+            background: #ffd700;
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 0 0 20px 20px;
+            padding: 25px;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .card h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .card h3 {
+            color: #ffaa00;
+            margin: 15px 0 10px 0;
+            font-size: 1.1em;
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+
+        .code-header {
+            background: #161b22;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .code-header span {
+            font-family: monospace;
+            font-size: 0.8em;
+            color: #8b949e;
+        }
+
+        .copy-btn {
+            background: #238636;
+            border: none;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75em;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #2ea043;
+        }
+
+        .copy-btn.copied {
+            background: #1f6feb;
+        }
+
+        pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #c9d1d9;
+        }
+
+        .info-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-list li {
+            padding: 6px 0;
+            padding-left: 22px;
+            position: relative;
+        }
+
+        .info-list li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+        }
+
+        .tip {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 3px solid #ffd700;
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .exercise {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .exercise h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            pre {
+                font-size: 11px;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐍 TEMA 10: Listas, Tuplas e Dicionários</h1>
+            <p>Estruturas de dados para iniciantes | Copie e cole no Google Colab</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="intro">📖 Conceitos</button>
+            <button class="tab-btn" data-tab="tuplas">📦 Tuplas</button>
+            <button class="tab-btn" data-tab="listas">📋 Listas</button>
+            <button class="tab-btn" data-tab="dicionarios">📚 Dicionários</button>
+            <button class="tab-btn" data-tab="exercicios">💪 Exercícios</button>
+        </div>
+
+        <!-- INTRODUÇÃO -->
+        <div id="intro" class="tab-content active">
+            <div class="card">
+                <h2>📌 O que são Listas, Tuplas e Dicionários?</h2>
+                <p>São estruturas que permitem guardar <strong>muitos valores</strong> dentro de uma única variável!</p>
+                <br>
+                <ul class="info-list">
+                    <li><strong>TUPLA</strong> = usa ( ) e não pode mudar (imutável)</li>
+                    <li><strong>LISTA</strong> = usa [ ] e pode mudar (mutável)</li>
+                    <li><strong>DICIONÁRIO</strong> = usa { } e guarda pares de CHAVE:VALOR</li>
+                </ul>
+                <div class="tip">
+                    💡 <strong>Dica importante:</strong> Sem essas estruturas, você teria que criar uma variável para cada aluno, cada produto, cada signo... seria um trabalho enorme!
+                </div>
+            </div>
+        </div>
+
+        <!-- TUPLAS -->
+        <div id="tuplas" class="tab-content">
+            <div class="card">
+                <h2>📦 Tuplas - Não podem ser alteradas</h2>
+                <p>Tuplas usam <strong>parênteses ( )</strong> e são <strong>IMUTÁVEIS</strong> (depois de criadas, não mudam).</p>
+
+                <h3>Exemplo: Criando e acessando uma tupla</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 tupla_simples.py</span>
+                        <button class="copy-btn" data-code='# Criando uma tupla com as estacoes do ano
+estacoes = ("Primavera", "Verao", "Outono", "Inverno")
+
+# Exibindo a tupla completa
+print(estacoes)
+
+# Acessando elementos por indice (comeca em 0)
+print(f"Primeira estacao: {estacoes[0]}")
+print(f"Ultima estacao: {estacoes[-1]}")
+
+# Verificando o tipo da variavel
+print(f"Tipo: {type(estacoes)}")'>Copiar</button>
+                    </div>
+                    <pre><code># Criando uma tupla com as estacoes do ano
+estacoes = ("Primavera", "Verao", "Outono", "Inverno")
+
+# Exibindo a tupla completa
+print(estacoes)
+
+# Acessando elementos por indice (comeca em 0)
+print(f"Primeira estacao: {estacoes[0]}")
+print(f"Ultima estacao: {estacoes[-1]}")
+
+# Verificando o tipo da variavel
+print(f"Tipo: {type(estacoes)}")</code></pre>
+                </div>
+                <div class="tip">⚠️ <strong>Importante:</strong> Se você tentar alterar um valor da tupla (ex: estacoes[0] = "Verao") o Python vai dar erro!</div>
+            </div>
+        </div>
+
+        <!-- LISTAS -->
+        <div id="listas" class="tab-content">
+            <div class="card">
+                <h2>📋 Listas - Podem ser alteradas</h2>
+                <p>Listas usam <strong>colchetes [ ]</strong> e são <strong>MUTÁVEIS</strong> (você pode alterar, adicionar ou remover).</p>
+
+                <h3>Exemplo 1: Criando e acessando uma lista</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 lista_criar.py</span>
+                        <button class="copy-btn" data-code='# Criando uma lista de alunos
+alunos = ["Ana", "Bruno", "Carla", "Daniel"]
+
+# Exibindo a lista completa
+print(f"Lista de alunos: {alunos}")
+
+# Acessando o primeiro elemento (indice 0)
+print(f"Primeiro aluno: {alunos[0]}")
+
+# Verificando quantos elementos tem na lista
+print(f"Quantidade de alunos: {len(alunos)}")'>Copiar</button>
+                    </div>
+                    <pre><code># Criando uma lista de alunos
+alunos = ["Ana", "Bruno", "Carla", "Daniel"]
+
+# Exibindo a lista completa
+print(f"Lista de alunos: {alunos}")
+
+# Acessando o primeiro elemento (indice 0)
+print(f"Primeiro aluno: {alunos[0]}")
+
+# Verificando quantos elementos tem na lista
+print(f"Quantidade de alunos: {len(alunos)}")</code></pre>
+                </div>
+
+                <h3>Exemplo 2: Alterando e adicionando elementos</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 lista_alterar_adicionar.py</span>
+                        <button class="copy-btn" data-code='# Lista original
+alunos = ["Ana", "Bruno", "Carla"]
+print(f"Original: {alunos}")
+
+# ALTERAR: troca o elemento do indice 1 (Bruno) por Beatriz
+alunos[1] = "Beatriz"
+print(f"Apos alterar: {alunos}")
+
+# ADICIONAR: insere um novo elemento no final da lista
+alunos.append("Daniel")
+print(f"Apos adicionar: {alunos}")'>Copiar</button>
+                    </div>
+                    <pre><code># Lista original
+alunos = ["Ana", "Bruno", "Carla"]
+print(f"Original: {alunos}")
+
+# ALTERAR: troca o elemento do indice 1 (Bruno) por Beatriz
+alunos[1] = "Beatriz"
+print(f"Após alterar: {alunos}")
+
+# ADICIONAR: insere um novo elemento no final da lista
+alunos.append("Daniel")
+print(f"Após adicionar: {alunos}")</code></pre>
+                </div>
+
+                <h3>Exemplo 3: Removendo elementos (EXCLUSÃO)</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 lista_remover.py</span>
+                        <button class="copy-btn" data-code='# Lista original com 5 alunos
+alunos = ["Ana", "Bruno", "Carla", "Daniel", "Elisa"]
+print(f"Original: {alunos}")
+
+# METODO 1: remove() - remove pelo VALOR (primeira ocorrencia)
+alunos.remove("Carla")
+print(f"Apos remove(Carla): {alunos}")
+
+# METODO 2: pop() - remove pelo INDICE e RETORNA o valor removido
+removido = alunos.pop(2)
+print(f"Apos pop(2): {alunos}")
+print(f"Elemento removido: {removido}")
+
+# METODO 3: del - remove pelo INDICE (nao retorna o valor)
+del alunos[0]
+print(f"Apos del alunos[0]: {alunos}")'>Copiar</button>
+                    </div>
+                    <pre><code># Lista original com 5 alunos
+alunos = ["Ana", "Bruno", "Carla", "Daniel", "Elisa"]
+print(f"Original: {alunos}")
+
+# METODO 1: remove() - remove pelo VALOR (primeira ocorrencia)
+alunos.remove("Carla")
+print(f"Após remove(Carla): {alunos}")
+
+# METODO 2: pop() - remove pelo INDICE e RETORNA o valor removido
+removido = alunos.pop(2)
+print(f"Após pop(2): {alunos}")
+print(f"Elemento removido: {removido}")
+
+# METODO 3: del - remove pelo INDICE (nao retorna o valor)
+del alunos[0]
+print(f"Após del alunos[0]: {alunos}")</code></pre>
+                </div>
+
+                <h3>Exemplo 4: Ordenando uma lista</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 lista_ordenar.py</span>
+                        <button class="copy-btn" data-code='# Lista de numeros desordenada
+numeros = [5, 2, 8, 1, 9]
+print(f"Original: {numeros}")
+
+# sort() - ordena em ordem CRESCENTE
+numeros.sort()
+print(f"Ordenado (crescente): {numeros}")
+
+# sort(reverse=True) - ordena em ordem DECRESCENTE
+numeros.sort(reverse=True)
+print(f"Ordenado (decrescente): {numeros}")'>Copiar</button>
+                    </div>
+                    <pre><code># Lista de numeros desordenada
+numeros = [5, 2, 8, 1, 9]
+print(f"Original: {numeros}")
+
+# sort() - ordena em ordem CRESCENTE
+numeros.sort()
+print(f"Ordenado (crescente): {numeros}")
+
+# sort(reverse=True) - ordena em ordem DECRESCENTE
+numeros.sort(reverse=True)
+print(f"Ordenado (decrescente): {numeros}")</code></pre>
+                </div>
+
+                <h3>Exemplo 5: Soma, maior e menor valor</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 lista_numeros.py</span>
+                        <button class="copy-btn" data-code='# Lista de valores numericos
+valores = [10, 25, 30, 15, 40]
+print(f"Lista: {valores}")
+
+# sum() - soma todos os elementos
+print(f"Soma: {sum(valores)}")
+
+# max() - encontra o maior valor
+print(f"Maior valor: {max(valores)}")
+
+# min() - encontra o menor valor
+print(f"Menor valor: {min(valores)}")'>Copiar</button>
+                    </div>
+                    <pre><code># Lista de valores numericos
+valores = [10, 25, 30, 15, 40]
+print(f"Lista: {valores}")
+
+# sum() - soma todos os elementos
+print(f"Soma: {sum(valores)}")
+
+# max() - encontra o maior valor
+print(f"Maior valor: {max(valores)}")
+
+# min() - encontra o menor valor
+print(f"Menor valor: {min(valores)}")</code></pre>
+                </div>
+
+                <div class="tip">💡 <strong>Resumo dos métodos de exclusão:</strong><br>• <code>remove(valor)</code> - remove pelo VALOR<br>• <code>pop(índice)</code> - remove pelo ÍNDICE e retorna o valor<br>• <code>del lista[índice]</code> - remove pelo ÍNDICE (não retorna o valor)</div>
+            </div>
+        </div>
+
+        <!-- DICIONÁRIOS -->
+        <div id="dicionarios" class="tab-content">
+            <div class="card">
+                <h2>📚 Dicionários - Pares de Chave:Valor</h2>
+                <p>Dicionários usam <strong>chaves { }</strong> e acessam valores por uma <strong>CHAVE</strong> (não por índice).</p>
+
+                <h3>Exemplo 1: Criando um dicionário</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 dicionario_criar.py</span>
+                        <button class="copy-btn" data-code='# Criando um dicionario com informacoes de uma pessoa
+pessoa = {
+    "nome": "Joao",
+    "idade": 25,
+    "cidade": "Sao Paulo"
+}
+
+print(pessoa)
+print(f"Tipo: {type(pessoa)}")'>Copiar</button>
+                    </div>
+                    <pre><code># Criando um dicionario com informacoes de uma pessoa
+pessoa = {
+    "nome": "Joao",
+    "idade": 25,
+    "cidade": "Sao Paulo"
+}
+
+print(pessoa)
+print(f"Tipo: {type(pessoa)}")</code></pre>
+                </div>
+
+                <h3>Exemplo 2: Acessando valores pelas chaves</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 dicionario_acessar.py</span>
+                        <button class="copy-btn" data-code='# Dicionario da pessoa
+pessoa = {"nome": "Joao", "idade": 25, "cidade": "Sao Paulo"}
+
+# Acessando valores usando as CHAVES (nao usa indice!)
+print(f"Nome: {pessoa['nome']}")
+print(f"Idade: {pessoa['idade']}")
+print(f"Cidade: {pessoa['cidade']}")'>Copiar pela tela</button>
+                    </div>
+                    <pre><code># Dicionario da pessoa
+pessoa = {"nome": "Joao", "idade": 25, "cidade": "Sao Paulo"}
+
+# Acessando valores usando as CHAVES (nao usa indice!)
+print(f"Nome: {pessoa['nome']}")
+print(f"Idade: {pessoa['idade']}")
+print(f"Cidade: {pessoa['cidade']}")</code></pre>
+                </div>
+
+                <h3>Exemplo 3: Alterando e adicionando valores</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 dicionario_alterar_adicionar.py</span>
+                        <button class="copy-btn" data-code='# Dicionario original
+pessoa = {"nome": "Joao", "idade": 25, "cidade": "Sao Paulo"}
+print(f"Original: {pessoa}")
+
+# ALTERAR: muda o valor da chave "idade"
+pessoa["idade"] = 26
+print(f"Apos alterar idade: {pessoa}")
+
+# ADICIONAR: cria uma nova chave "profissao"
+pessoa["profissao"] = "Engenheiro"
+print(f"Apos adicionar profissao: {pessoa}")'>Copiar</button>
+                    </div>
+                    <pre><code># Dicionario original
+pessoa = {"nome": "Joao", "idade": 25, "cidade": "Sao Paulo"}
+print(f"Original: {pessoa}")
+
+# ALTERAR: muda o valor da chave "idade"
+pessoa["idade"] = 26
+print(f"Após alterar idade: {pessoa}")
+
+# ADICIONAR: cria uma nova chave "profissao"
+pessoa["profissao"] = "Engenheiro"
+print(f"Após adicionar profissao: {pessoa}")</code></pre>
+                </div>
+
+                <h3>Exemplo 4: Removendo chaves (EXCLUSÃO)</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 dicionario_remover.py</span>
+                        <button class="copy-btn" data-code='# Dicionario completo
+pessoa = {
+    "nome": "Joao",
+    "idade": 25,
+    "cidade": "Sao Paulo",
+    "profissao": "Engenheiro",
+    "telefone": "99999-9999"
+}
+print(f"Original: {pessoa}")
+
+# METODO 1: del - remove a chave (nao retorna o valor)
+del pessoa["profissao"]
+print(f"Apos del pessoa[profissao]: {pessoa}")
+
+# METODO 2: pop() - remove a chave e RETORNA o valor
+telefone_removido = pessoa.pop("telefone")
+print(f"Apos pop(telefone): {pessoa}")
+print(f"Telefone removido: {telefone_removido}")
+
+# METODO 3: popitem() - remove e retorna o ULTIMO par
+chave_removida, valor_removido = pessoa.popitem()
+print(f"Apos popitem(): {pessoa}")
+print(f"Ultimo par removido: {chave_removida}:{valor_removido}")'>Copiar</button>
+                    </div>
+                    <pre><code># Dicionario completo
+pessoa = {
+    "nome": "Joao",
+    "idade": 25,
+    "cidade": "Sao Paulo",
+    "profissao": "Engenheiro",
+    "telefone": "99999-9999"
+}
+print(f"Original: {pessoa}")
+
+# METODO 1: del - remove a chave (nao retorna o valor)
+del pessoa["profissao"]
+print(f"Após del pessoa[profissao]: {pessoa}")
+
+# METODO 2: pop() - remove a chave e RETORNA o valor
+telefone_removido = pessoa.pop("telefone")
+print(f"Após pop(telefone): {pessoa}")
+print(f"Telefone removido: {telefone_removido}")
+
+# METODO 3: popitem() - remove e retorna o ULTIMO par
+chave_removida, valor_removido = pessoa.popitem()
+print(f"Após popitem(): {pessoa}")
+print(f"Ultimo par removido: {chave_removida}:{valor_removido}")</code></pre>
+                </div>
+
+                <h3>Exemplo 5: Percorrendo um dicionário com for</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>📄 dicionario_for.py</span>
+                        <button class="copy-btn" data-code='# Dicionario da pessoa
+pessoa = {
+    "nome": "Joao",
+    "idade": 25,
+    "cidade": "Sao Paulo",
+    "profissao": "Engenheiro"
+}
+
+print("Informacoes da pessoa:")
+for chave, valor in pessoa.items():
+    print(f"{chave}: {valor}")'>Copiar</button>
+                    </div>
+                    <pre><code># Dicionario da pessoa
+pessoa = {
+    "nome": "Joao",
+    "idade": 25,
+    "cidade": "Sao Paulo",
+    "profissao": "Engenheiro"
+}
+
+print("Informacoes da pessoa:")
+for chave, valor in pessoa.items():
+    print(f"{chave}: {valor}")</code></pre>
+                </div>
+
+                <div class="tip">💡 <strong>Resumo dos métodos de exclusão em dicionários:</strong><br>• <code>del dicionario["chave"]</code> - remove a chave (não retorna o valor)<br>• <code>pop("chave")</code> - remove a chave e RETORNA o valor<br>• <code>popitem()</code> - remove e retorna o ÚLTIMO par chave:valor</div>
+            </div>
+        </div>
+
+        <!-- EXERCÍCIOS -->
+        <div id="exercicios" class="tab-content">
+            <div class="card">
+                <h2>💪 Exercícios Práticos (para fazer no Colab)</h2>
+
+                <div class="exercise">
+                    <h4>Exercício 1: Lista de compras</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>📄 exercicio1.py</span>
+                            <button class="copy-btn" data-code='# Exercicio 1: Lista de compras
+compras = ["Arroz", "Feijao", "Macarrao", "Leite", "Cafe"]
+print(f"Lista inicial: {compras}")
+
+compras.append("Acucar")
+print(f"Apos adicionar: {compras}")
+
+compras.pop(0)
+print(f"Lista final: {compras}")'>Copiar</button>
+                        </div>
+                        <pre><code># Exercicio 1: Lista de compras
+compras = ["Arroz", "Feijao", "Macarrao", "Leite", "Cafe"]
+print(f"Lista inicial: {compras}")
+
+compras.append("Acucar")
+print(f"Após adicionar: {compras}")
+
+compras.pop(0)
+print(f"Lista final: {compras}")</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>Exercício 2: Maior e menor de uma lista</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>📄 exercicio2.py</span>
+                            <button class="copy-btn" data-code='# Exercicio 2: Maior, menor e soma
+numeros = [15, 8, 30, 5, 12, 25]
+print(f"Lista: {numeros}")
+
+maior = max(numeros)
+print(f"Maior valor: {maior}")
+
+menor = min(numeros)
+print(f"Menor valor: {menor}")
+
+soma = sum(numeros)
+print(f"Soma: {soma}")'>Copiar</button>
+                        </div>
+                        <pre><code># Exercicio 2: Maior, menor e soma
+numeros = [15, 8, 30, 5, 12, 25]
+print(f"Lista: {numeros}")
+
+maior = max(numeros)
+print(f"Maior valor: {maior}")
+
+menor = min(numeros)
+print(f"Menor valor: {menor}")
+
+soma = sum(numeros)
+print(f"Soma: {soma}")</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>Exercício 3: Tupla dos dias da semana</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>📄 exercicio3.py</span>
+                            <button class="copy-btn" data-code='# Exercicio 3: Dias da semana (tupla)
+dias = ("Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado")
+
+print(f"Todos os dias: {dias}")
+print(f"Primeiro dia: {dias[0]}")
+print(f"Ultimo dia: {dias[-1]}")'>Copiar</button>
+                        </div>
+                        <pre><code># Exercicio 3: Dias da semana (tupla)
+dias = ("Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado")
+
+print(f"Todos os dias: {dias}")
+print(f"Primeiro dia: {dias[0]}")
+print(f"Ultimo dia: {dias[-1]}")</code></pre>
+                    </div>
+                </div>
+
+                <div class="exercise">
+                    <h4>Exercício 4: Dicionário do seu pet</h4>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>📄 exercicio4.py</span>
+                            <button class="copy-btn" data-code='# Exercicio 4: Dicionario do meu pet
+meu_pet = {
+    "nome": "Rex",
+    "tipo": "Cachorro",
+    "idade": 3,
+    "cor": "Caramelo"
+}
+
+print("Informacoes do meu pet:")
+for chave, valor in meu_pet.items():
+    print(f"{chave}: {valor}")'>Copiar</button>
+                        </div>
+                        <pre><code># Exercicio 4: Dicionario do meu pet
+meu_pet = {
+    "nome": "Rex",
+    "tipo": "Cachorro",
+    "idade": 3,
+    "cor": "Caramelo"
+}
+
+print("Informacoes do meu pet:")
+for chave, valor in meu_pet.items():
+    print(f"{chave}: {valor}")</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📚 TEMA 10 - Listas, Tuplas e Dicionários | Material com comentários para facilitar o aprendizado</p>
+            <p>💡 Copie cada código, cole no Google Colab e execute (Shift + Enter)</p>
+        </footer>
+    </div>
+
+    <script>
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        const copyBtns = document.querySelectorAll('.copy-btn');
+
+        copyBtns.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const codeToCopy = btn.getAttribute('data-code');
+
+                try {
+                    await navigator.clipboard.writeText(codeToCopy);
+                    const originalText = btn.textContent;
+                    btn.textContent = '✓ Copiado!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Erro ao copiar:', err);
+                    btn.textContent = 'Erro!';
+                    setTimeout(() => {
+                        btn.textContent = 'Copiar';
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
